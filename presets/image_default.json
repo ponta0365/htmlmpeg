@@ -1,0 +1,248 @@
+[
+  {
+    "id": "image_webp_high",
+    "name": "WebP高圧縮",
+    "type": "image",
+    "description": "画像のサイズ削減を重視した設定",
+    "output_extension": ".webp",
+    "settings": {
+      "overwrite": false,
+      "image_mode": "lossy",
+      "image_preserve_metadata": true,
+      "image_webp_preset": "picture",
+      "quality": 75
+    },
+    "ffmpeg_args_template": [
+      "-q:v",
+      "{quality}"
+    ]
+  },
+  {
+    "id": "image_jpeg_light",
+    "name": "JPEG軽量",
+    "type": "image",
+    "description": "互換性重視の軽量画像圧縮",
+    "output_extension": ".jpg",
+    "settings": {
+      "overwrite": false,
+      "image_mode": "lossy",
+      "image_preserve_metadata": true,
+      "image_jpeg_huffman": "optimal",
+      "quality": 4
+    },
+    "ffmpeg_args_template": [
+      "-q:v",
+      "{quality}"
+    ]
+  },
+  {
+    "id": "image_png_webp_thumb",
+    "name": "PNGからWebP",
+    "type": "image",
+    "description": "サムネイル用途の軽量化",
+    "output_extension": ".webp",
+    "settings": {
+      "overwrite": false,
+      "image_mode": "lossy",
+      "image_preserve_metadata": true,
+      "image_webp_preset": "icon",
+      "quality": 80
+    },
+    "ffmpeg_args_template": [
+      "-q:v",
+      "{quality}"
+    ]
+  },
+  {
+    "id": "image_webp_lossless",
+    "name": "WebPロスレス",
+    "type": "image",
+    "description": "画質を保ったまま容量を抑えるWebP設定",
+    "output_extension": ".webp",
+    "settings": {
+      "overwrite": false,
+      "image_mode": "lossless",
+      "lossless": true,
+      "compression_level": 6,
+      "image_webp_preset": "picture",
+      "image_preserve_metadata": true
+    },
+    "ffmpeg_args_template": [
+      "-lossless",
+      "1",
+      "-compression_level",
+      "{compression_level}"
+    ]
+  },
+  {
+    "id": "image_png_high_compress",
+    "name": "PNG高圧縮",
+    "type": "image",
+    "description": "PNG の圧縮率を高める設定",
+    "output_extension": ".png",
+    "settings": {
+      "overwrite": false,
+      "image_mode": "lossless",
+      "compression_level": 9,
+      "image_preserve_metadata": true
+    },
+    "ffmpeg_args_template": [
+      "-compression_level",
+      "{compression_level}"
+    ]
+  },
+  {
+    "id": "image_jpeg_standard",
+    "name": "JPEG標準",
+    "type": "image",
+    "description": "画質と容量のバランスをとるJPEG設定",
+    "output_extension": ".jpg",
+    "settings": {
+      "overwrite": false,
+      "image_mode": "lossy",
+      "image_preserve_metadata": true,
+      "image_jpeg_huffman": "optimal",
+      "quality": 2
+    },
+    "ffmpeg_args_template": [
+      "-q:v",
+      "{quality}"
+    ]
+  },
+  {
+    "id": "image_webp_thumb",
+    "name": "WebPサムネイル",
+    "type": "image",
+    "description": "一覧表示や縮小画像向けの軽量WebP設定",
+    "output_extension": ".webp",
+    "settings": {
+      "overwrite": false,
+      "image_mode": "lossy",
+      "image_preserve_metadata": false,
+      "image_webp_preset": "icon",
+      "quality": 70,
+      "max_width": 1280,
+      "max_height": 1280,
+      "compression_level": 4
+    },
+    "ffmpeg_args_template": [
+      "-q:v",
+      "{quality}"
+    ]
+  },
+  {
+    "id": "image_png_thumb",
+    "name": "PNGサムネイル",
+    "type": "image",
+    "description": "PNG のまま縮小保存する軽量設定",
+    "output_extension": ".png",
+    "settings": {
+      "image_mode": "lossless",
+      "image_preserve_metadata": false,
+      "max_width": 1280,
+      "max_height": 1280,
+      "compression_level": 6
+    },
+    "ffmpeg_args_template": [
+      "-compression_level",
+      "{compression_level}"
+    ]
+  },
+  {
+    "id": "image_webp_photo",
+    "name": "WebP写真向け",
+    "type": "image",
+    "description": "写真系のWebP変換でバランスをとる設定",
+    "output_extension": ".webp",
+    "settings": {
+      "overwrite": false,
+      "image_mode": "lossy",
+      "image_preserve_metadata": true,
+      "image_webp_preset": "photo",
+      "quality": 82
+    },
+    "ffmpeg_args_template": [
+      "-q:v",
+      "{quality}"
+    ]
+  },
+  {
+    "id": "image_webp_icon",
+    "name": "WebPアイコン",
+    "type": "image",
+    "description": "アイコンや小さなUI画像向けのWebP設定",
+    "output_extension": ".webp",
+    "settings": {
+      "overwrite": false,
+      "image_mode": "lossless",
+      "image_preserve_metadata": false,
+      "image_webp_preset": "icon",
+      "compression_level": 5
+    },
+    "ffmpeg_args_template": [
+      "-compression_level",
+      "{compression_level}"
+    ]
+  },
+  {
+    "id": "image_jpeg_fast",
+    "name": "JPEG高速",
+    "type": "image",
+    "description": "速度優先のJPEG圧縮設定",
+    "output_extension": ".jpg",
+    "settings": {
+      "overwrite": false,
+      "image_mode": "lossy",
+      "image_preserve_metadata": false,
+      "image_jpeg_huffman": "default",
+      "quality": 6
+    },
+    "ffmpeg_args_template": [
+      "-q:v",
+      "{quality}"
+    ]
+  },
+  {
+    "id": "image_webp_shader_enhanced",
+    "name": "WebP shader高画質",
+    "type": "image",
+    "description": "libplacebo を使って高画質化するWebP設定",
+    "output_extension": ".webp",
+    "settings": {
+      "overwrite": false,
+      "image_mode": "lossy",
+      "image_enhance_mode": "enhance",
+      "image_deband": true,
+      "image_upscaler": "spline36",
+      "image_downscaler": "mitchell",
+      "image_preserve_metadata": true,
+      "image_webp_preset": "photo",
+      "quality": 82
+    },
+    "ffmpeg_args_template": [
+      "-q:v",
+      "{quality}"
+    ]
+  },
+  {
+    "id": "image_png_shader_enhanced",
+    "name": "PNG shader高画質",
+    "type": "image",
+    "description": "libplacebo を使って高画質化するPNG設定",
+    "output_extension": ".png",
+    "settings": {
+      "overwrite": false,
+      "image_mode": "lossless",
+      "image_enhance_mode": "enhance",
+      "image_deband": true,
+      "image_upscaler": "spline36",
+      "image_downscaler": "mitchell",
+      "image_preserve_metadata": true,
+      "compression_level": 6
+    },
+    "ffmpeg_args_template": [
+      "-compression_level",
+      "{compression_level}"
+    ]
+  }
+]
