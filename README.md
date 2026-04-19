@@ -54,5 +54,10 @@ To rebuild locally, run:
 To publish a GitHub Release with `gh`, run:
 
 ```powershell
-.\publish_release.ps1
-```
+.\publish_release.ps1`
+
+## Acknowledgments
+
+This project uses FFmpeg and related libraries and tools provided by their respective authors and maintainers. I would like to express my gratitude to everyone who created and maintains the libraries and EXE-related tools used here.
+
+This application was developed with the assistance of AI, and the source code and release workflow were prepared and published with AI support. The project is intended to be used transparently so that there is no misunderstanding about how it was created.
