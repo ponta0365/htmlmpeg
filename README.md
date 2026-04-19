@@ -4,9 +4,9 @@ Local FFmpeg compressor for video, audio, and image files.
 
 ![Application preview](assets/readme-preview.png)
 
-## Why this exists
+## Purpose
 
-FFmpeg is powerful, but its command-line workflow is often too technical for everyday use. This project wraps common compression tasks in a browser UI with presets, local file handling, and persistent settings so the tool stays practical on Windows.
+FFmpeg is powerful, but its command-line workflow is often too technical for everyday use. This project turns common compression tasks into a browser-based workflow with presets, local file handling, and persistent settings so the tool stays practical on Windows.
 
 This project provides:
 
@@ -67,4 +67,4 @@ To publish a GitHub Release with `gh`, run:
 
 This project uses FFmpeg and related libraries and tools provided by their respective authors and maintainers. I would like to express my gratitude to everyone who created and maintains the libraries and EXE-related tools used here.
 
-This application was developed with the assistance of AI, and the source code and release workflow were prepared and published with AI support. The project is intended to be used transparently so that there is no misunderstanding about how it was created.
+This application was developed with the assistance of AI. The source code, release workflow, and publication process were prepared and published with AI support, and this is disclosed here transparently to avoid misunderstanding about how it was created.
