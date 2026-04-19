@@ -40,7 +40,7 @@ catch {
 }
 
 $releaseTitle = 'ブラウザFFMPEG Windows EXE'
-$releaseNotes = "Windows pre-release build of htmlmpeg.`n`nIncluded:`n- Browser-based UI for local FFmpeg compression`n- Python backend`n- Preset-based workflows for video, audio, and image files`n`nAssets:`n- ブラウザFFMPEG.exe`n- ブラウザFFMPEG.zip`n`nUsage:`n1. Download one of the assets.`n2. Extract the zip if needed.`n3. Run the EXE on Windows.`n`nFor project details, see the repository README."
+$releaseNotes = "Windows pre-release build of htmlmpeg.`n`nIncluded:`n- Browser-based UI for local FFmpeg compression`n- Python backend`n- Preset-based workflows for video, audio, and image files`n`nAssets:`n- FFMPEG.exe`n- FFMPEG.zip`n`nUsage:`n1. Download one of the assets.`n2. Extract the zip if needed.`n3. Run the EXE on Windows.`n`nFor project details, see the repository README."
 
 function Remove-ReleaseAssetIfExists {
   param(
@@ -59,8 +59,6 @@ function Remove-ReleaseAssetIfExists {
 if ($releaseExists) {
   Remove-ReleaseAssetIfExists -Tag $tagName -AssetName 'FFMPEG.exe'
   Remove-ReleaseAssetIfExists -Tag $tagName -AssetName 'FFMPEG.zip'
-  Remove-ReleaseAssetIfExists -Tag $tagName -AssetName 'ブラウザFFMPEG.exe'
-  Remove-ReleaseAssetIfExists -Tag $tagName -AssetName 'ブラウザFFMPEG.zip'
   & $ghPath release upload $tagName $exePath $zipPath --clobber
 }
 else {
