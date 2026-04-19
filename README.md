@@ -54,7 +54,8 @@ To rebuild locally, run:
 To publish a GitHub Release with `gh`, run:
 
 ```powershell
-.\publish_release.ps1`
+.\publish_release.ps1
+```
 
 ## Acknowledgments
 
