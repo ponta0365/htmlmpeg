@@ -38,3 +38,9 @@ To rebuild locally, run:
 ```powershell
 .\build_exe.ps1
 ```
+
+To publish a GitHub Release with `gh`, run:
+
+```powershell
+.\publish_release.ps1
+```
