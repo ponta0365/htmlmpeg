@@ -19,7 +19,7 @@ if (-not $gh) {
   throw "GitHub CLI 'gh' is required. Install it first, then run this script again."
 }
 
-$ghPath = $gh.Source
+$ghPath = if ($gh.PSObject.Properties.Match('Source').Count -gt 0 -and $gh.Source) { $gh.Source } else { $gh.FullName }
 
 if (-not (Test-Path $exePath)) {
   throw "EXE not found: $exePath. Run build_exe.ps1 first."
