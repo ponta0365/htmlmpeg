@@ -2,6 +2,12 @@
 
 Local FFmpeg compressor for video, audio, and image files.
 
+![Application preview](assets/readme-preview.png)
+
+## Why this exists
+
+FFmpeg is powerful, but its command-line workflow is often too technical for everyday use. This project wraps common compression tasks in a browser UI with presets, local file handling, and persistent settings so the tool stays practical on Windows.
+
 This project provides:
 
 - a browser-based UI
