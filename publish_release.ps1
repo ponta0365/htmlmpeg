@@ -7,9 +7,19 @@ $exePath = Join-Path $root 'dist\ブラウザFFMPEG.exe'
 $zipPath = Join-Path $root 'dist\ブラウザFFMPEG.zip'
 $tagName = 'exe-latest'
 
-if (-not (Get-Command gh -ErrorAction SilentlyContinue)) {
+$gh = Get-Command gh -ErrorAction SilentlyContinue
+if (-not $gh) {
+  $candidate = 'C:\Program Files\GitHub CLI\gh.exe'
+  if (Test-Path $candidate) {
+    $gh = Get-Item $candidate
+  }
+}
+
+if (-not $gh) {
   throw "GitHub CLI 'gh' is required. Install it first, then run this script again."
 }
+
+$ghPath = $gh.Source
 
 if (-not (Test-Path $exePath)) {
   throw "EXE not found: $exePath. Run build_exe.ps1 first."
@@ -23,7 +33,7 @@ Compress-Archive -Path $exePath -DestinationPath $zipPath -CompressionLevel Opti
 
 $releaseExists = $true
 try {
-  gh release view $tagName | Out-Null
+  & $ghPath release view $tagName | Out-Null
 }
 catch {
   $releaseExists = $false
@@ -33,10 +43,10 @@ $releaseTitle = 'ブラウザFFMPEG EXE'
 $releaseNotes = "Automated release built from $(git rev-parse --short HEAD)"
 
 if ($releaseExists) {
-  gh release upload $tagName $exePath $zipPath --clobber
+  & $ghPath release upload $tagName $exePath $zipPath --clobber
 }
 else {
-  gh release create $tagName $exePath $zipPath --title $releaseTitle --notes $releaseNotes --prerelease
+  & $ghPath release create $tagName $exePath $zipPath --title $releaseTitle --notes $releaseNotes --prerelease
 }
 
 Write-Host "Release published: $tagName"
