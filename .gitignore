@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+build/
+dist/
+temp/
+logs/*.json
+config/app_settings.json
+presets/user_presets.json
+AGENTS.md
+*.exe
