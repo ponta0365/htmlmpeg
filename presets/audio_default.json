@@ -1,0 +1,221 @@
+[
+  {
+    "id": "audio_mp3_standard",
+    "name": "MP3標準",
+    "type": "audio",
+    "description": "汎用性を重視した音声圧縮",
+    "output_extension": ".mp3",
+    "settings": {
+      "overwrite": false,
+      "audio_mode": "reencode",
+      "audio_bitrate_mode": "cbr",
+      "audio_codec": "libmp3lame",
+      "audio_bitrate": "192k",
+      "preserve_metadata": true
+    },
+    "ffmpeg_args_template": [
+      "-c:a",
+      "{audio_codec}",
+      "-b:a",
+      "{audio_bitrate}"
+    ]
+  },
+  {
+    "id": "audio_mp3_vbr_high",
+    "name": "MP3高音質VBR",
+    "type": "audio",
+    "description": "quality 指定で高音質寄りの MP3 を作る",
+    "output_extension": ".mp3",
+    "settings": {
+      "overwrite": false,
+      "audio_mode": "reencode",
+      "audio_bitrate_mode": "vbr",
+      "audio_codec": "libmp3lame",
+      "audio_quality": 2,
+      "preserve_metadata": true
+    },
+    "ffmpeg_args_template": [
+      "-c:a",
+      "{audio_codec}",
+      "-q:a",
+      "{audio_quality}"
+    ]
+  },
+  {
+    "id": "audio_aac_light",
+    "name": "AAC軽量",
+    "type": "audio",
+    "description": "互換性を保ちながら軽くする",
+    "output_extension": ".m4a",
+    "settings": {
+      "overwrite": false,
+      "audio_mode": "reencode",
+      "audio_bitrate_mode": "cbr",
+      "audio_codec": "aac",
+      "audio_bitrate": "128k",
+      "audio_sample_rate": 44100,
+      "preserve_metadata": true
+    },
+    "ffmpeg_args_template": [
+      "-c:a",
+      "{audio_codec}",
+      "-b:a",
+      "{audio_bitrate}",
+      "-ar",
+      "{audio_sample_rate}"
+    ]
+  },
+  {
+    "id": "audio_opus_high",
+    "name": "Opus高圧縮",
+    "type": "audio",
+    "description": "容量削減を重視した音声圧縮",
+    "output_extension": ".opus",
+    "settings": {
+      "overwrite": false,
+      "audio_mode": "reencode",
+      "audio_bitrate_mode": "vbr",
+      "audio_codec": "libopus",
+      "audio_bitrate": "96k",
+      "audio_sample_rate": 48000,
+      "audio_channels": 2,
+      "preserve_metadata": true
+    },
+    "ffmpeg_args_template": [
+      "-c:a",
+      "{audio_codec}",
+      "-b:a",
+      "{audio_bitrate}",
+      "-ar",
+      "{audio_sample_rate}",
+      "-ac",
+      "{audio_channels}"
+    ]
+  },
+  {
+    "id": "audio_normalized_aac",
+    "name": "音量正規化AAC",
+    "type": "audio",
+    "description": "loudnorm を使った標準AAC",
+    "output_extension": ".m4a",
+    "settings": {
+      "overwrite": false,
+      "audio_mode": "reencode",
+      "audio_bitrate_mode": "cbr",
+      "audio_codec": "aac",
+      "audio_bitrate": "128k",
+      "audio_sample_rate": 44100,
+      "audio_filter": "loudnorm=I=-16:TP=-1.5:LRA=11",
+      "preserve_metadata": true
+    },
+    "ffmpeg_args_template": [
+      "-af",
+      "{audio_filter}",
+      "-c:a",
+      "{audio_codec}",
+      "-b:a",
+      "{audio_bitrate}",
+      "-ar",
+      "{audio_sample_rate}"
+    ]
+  },
+  {
+    "id": "audio_copy_keep_metadata",
+    "name": "音声コピー",
+    "type": "audio",
+    "description": "再エンコードせずに音声をそのまま保存",
+    "output_extension": ".mka",
+    "settings": {
+      "overwrite": false,
+      "audio_mode": "copy",
+      "audio_bitrate_mode": "cbr",
+      "audio_codec": "copy",
+      "preserve_metadata": true
+    },
+    "ffmpeg_args_template": [
+      "-c:a",
+      "{audio_codec}"
+    ]
+  },
+  {
+    "id": "audio_voice_clarity_aac",
+    "name": "会話向けAAC",
+    "type": "audio",
+    "description": "聞き取りやすさを重視したAAC設定",
+    "output_extension": ".m4a",
+    "settings": {
+      "overwrite": false,
+      "audio_mode": "reencode",
+      "audio_bitrate_mode": "cbr",
+      "audio_codec": "aac",
+      "audio_bitrate": "128k",
+      "audio_sample_rate": 44100,
+      "audio_filter": "highpass=f=80,lowpass=f=12000,acompressor=threshold=-18dB:ratio=3:attack=10:release=150,loudnorm=I=-16:TP=-1.5:LRA=11",
+      "preserve_metadata": true
+    },
+    "ffmpeg_args_template": [
+      "-af",
+      "{audio_filter}",
+      "-c:a",
+      "{audio_codec}",
+      "-b:a",
+      "{audio_bitrate}",
+      "-ar",
+      "{audio_sample_rate}"
+    ]
+  },
+  {
+    "id": "audio_narration_aac",
+    "name": "ナレーションAAC",
+    "type": "audio",
+    "description": "ナレーションや講義を聞きやすくする設定",
+    "output_extension": ".m4a",
+    "settings": {
+      "overwrite": false,
+      "audio_mode": "reencode",
+      "audio_bitrate_mode": "cbr",
+      "audio_codec": "aac",
+      "audio_bitrate": "160k",
+      "audio_sample_rate": 48000,
+      "audio_filter": "highpass=f=70,lowpass=f=14000,loudnorm=I=-16:TP=-1.5:LRA=11",
+      "preserve_metadata": true
+    },
+    "ffmpeg_args_template": [
+      "-af",
+      "{audio_filter}",
+      "-c:a",
+      "{audio_codec}",
+      "-b:a",
+      "{audio_bitrate}",
+      "-ar",
+      "{audio_sample_rate}"
+    ]
+  },
+  {
+    "id": "audio_noise_reduce_aac",
+    "name": "ノイズ低減AAC",
+    "type": "audio",
+    "description": "軽いノイズを抑えて聞き取りやすくする設定",
+    "output_extension": ".m4a",
+    "settings": {
+      "overwrite": false,
+      "audio_mode": "reencode",
+      "audio_bitrate_mode": "cbr",
+      "audio_codec": "aac",
+      "audio_bitrate": "128k",
+      "audio_sample_rate": 44100,
+      "audio_filter": "afftdn,loudnorm=I=-16:TP=-1.5:LRA=11",
+      "preserve_metadata": true
+    },
+    "ffmpeg_args_template": [
+      "-af",
+      "{audio_filter}",
+      "-c:a",
+      "{audio_codec}",
+      "-b:a",
+      "{audio_bitrate}",
+      "-ar",
+      "{audio_sample_rate}"
+    ]
+  }
+]
