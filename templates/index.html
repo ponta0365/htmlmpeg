@@ -1,0 +1,487 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ブラウザFFMPEG</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <main class="app-shell">
+    <header class="app-header">
+      <div class="eyebrow">Local FFmpeg Compressor</div>
+      <h1>ブラウザFFMPEG</h1>
+      <p>動画・音声・画像をローカルで圧縮するための最小操作画面です。</p>
+    </header>
+
+    <section class="grid">
+      <section class="panel panel-main">
+        <h2>圧縮設定</h2>
+
+        <div class="field-group">
+          <label>圧縮対象</label>
+          <div class="radio-row" id="type-group">
+            <label><input type="radio" name="type" value="video" checked> 動画</label>
+            <label><input type="radio" name="type" value="audio"> 音声</label>
+            <label><input type="radio" name="type" value="image"> 画像</label>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label for="input-mode">入力モード</label>
+          <select id="input-mode">
+            <option value="file">単一ファイル</option>
+            <option value="folder">フォルダ</option>
+          </select>
+        </div>
+
+        <div class="field-group">
+          <label>フォルダ設定</label>
+          <div class="check-row">
+            <label><input id="include-subfolders" type="checkbox"> サブフォルダを含める</label>
+            <label><input id="keep-folder-structure" type="checkbox"> 元フォルダ構造を維持</label>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label for="input-path">入力パス</label>
+          <div class="input-row">
+            <input id="input-path" type="text" placeholder="C:\\input\\sample.mp4">
+            <button id="pick-input-button" class="secondary" type="button">選択</button>
+          </div>
+          <div id="input-help" class="field-help">ローカルPC上の単一ファイルパスを入力してください。</div>
+        </div>
+
+        <div class="field-group">
+          <label>実行ファイルフォルダ設定</label>
+          <div class="input-row">
+            <input id="ffmpeg-dir" type="text" placeholder="C:\\ffmpeg\\bin">
+            <button id="save-app-settings-button" class="secondary" type="button">フォルダ設定を保存</button>
+          </div>
+          <div class="field-help">同じフォルダに ffmpeg.exe と ffprobe.exe を置いてください。空欄なら PATH から自動検出します。見つからない場合は公式配布の導入を案内します。</div>
+        </div>
+
+        <div class="field-group">
+          <label for="preset-select">プリセット</label>
+          <select id="preset-select"></select>
+        </div>
+
+        <div class="field-group">
+          <label for="preset-id">プリセット ID</label>
+          <input id="preset-id" type="text" placeholder="custom_preset_id">
+        </div>
+
+        <div class="field-group">
+          <label for="preset-name">プリセット名</label>
+          <input id="preset-name" type="text" placeholder="カスタムプリセット">
+        </div>
+
+        <div class="field-group">
+          <label for="preset-description">説明</label>
+          <input id="preset-description" type="text" placeholder="用途や特徴の説明">
+        </div>
+
+        <div class="field-group">
+          <label for="preset-extension">出力拡張子</label>
+          <input id="preset-extension" type="text" placeholder=".mp4">
+        </div>
+
+        <div class="field-group">
+          <label>プリセットの上書き設定</label>
+          <label class="checkbox-inline">
+            <input id="preset-overwrite-existing" type="checkbox">
+            既存ファイルを上書きする
+          </label>
+          <div class="field-help">この値はプリセット設定として保存され、選択時に実行側の既定値へ反映されます。</div>
+        </div>
+
+        <section id="video-settings-panel" class="preset-subpanel">
+          <div class="subpanel-heading">動画詳細設定</div>
+          <div class="settings-grid">
+            <div class="field-group compact">
+              <label for="video-audio-stream-mode">音声トラック</label>
+              <select id="video-audio-stream-mode">
+                <option value="all">全トラック保持</option>
+                <option value="first">先頭のみ</option>
+                <option value="japanese_only">日本語のみ保持（全日本語トラック）</option>
+                <option value="japanese_only_first">日本語のみ保持（先頭1本）</option>
+              </select>
+              <div id="video-audio-stream-help" class="field-help compact-help"></div>
+            </div>
+            <div class="field-group compact">
+              <label for="video-subtitle-mode">字幕</label>
+              <select id="video-subtitle-mode">
+                <option value="hidden">字幕は非表示</option>
+                <option value="text">テキスト字幕のみ保持</option>
+                <option value="copy">画像字幕も含めて保持</option>
+              </select>
+              <div id="video-subtitle-help" class="field-help compact-help"></div>
+            </div>
+            <div class="field-group compact">
+              <label for="video-threads">threads</label>
+              <input id="video-threads" type="number" min="1" step="1" placeholder="14">
+            </div>
+            <div class="field-group compact">
+              <label for="video-codec">映像コーデック</label>
+              <input id="video-codec" type="text" placeholder="libsvtav1">
+            </div>
+            <div class="field-group compact">
+              <label for="video-preset">preset</label>
+              <input id="video-preset" type="text" placeholder="8">
+            </div>
+            <div class="field-group compact">
+              <label for="video-crf">crf</label>
+              <input id="video-crf" type="number" min="0" step="1" placeholder="35">
+            </div>
+            <div class="field-group compact">
+              <label for="video-scale-height">scale_height</label>
+              <input id="video-scale-height" type="number" min="1" step="1" placeholder="720">
+            </div>
+            <div class="field-group compact">
+              <label for="video-audio-filter">音声フィルタ</label>
+              <input id="video-audio-filter" type="text" placeholder="loudnorm=I=-16:TP=-1.5:LRA=11">
+            </div>
+            <div class="field-group compact">
+              <label for="video-audio-codec">音声コーデック</label>
+              <input id="video-audio-codec" type="text" placeholder="aac">
+            </div>
+            <div class="field-group compact">
+              <label for="video-audio-sample-rate">音声サンプルレート</label>
+              <input id="video-audio-sample-rate" type="number" min="8000" step="1" placeholder="44100">
+            </div>
+            <div class="field-group compact">
+              <label for="video-audio-bitrate">音声ビットレート</label>
+              <input id="video-audio-bitrate" type="text" placeholder="128k">
+            </div>
+            <div class="field-group compact track-languages">
+              <label for="video-audio-language-0">音声言語 1</label>
+              <input id="video-audio-language-0" type="text" placeholder="jpn">
+            </div>
+            <div class="field-group compact track-languages">
+              <label for="video-audio-language-1">音声言語 2</label>
+              <input id="video-audio-language-1" type="text" placeholder="jpn">
+            </div>
+            <div class="field-group compact track-languages">
+              <label for="video-audio-language-2">音声言語 3</label>
+              <input id="video-audio-language-2" type="text" placeholder="eng">
+            </div>
+            <div class="field-group compact">
+              <label for="video-color-primaries">color_primaries</label>
+              <input id="video-color-primaries" type="text" placeholder="bt709">
+            </div>
+            <div class="field-group compact">
+              <label for="video-color-trc">color_trc</label>
+              <input id="video-color-trc" type="text" placeholder="bt709">
+            </div>
+            <div class="field-group compact">
+              <label for="video-colorspace">colorspace</label>
+              <input id="video-colorspace" type="text" placeholder="bt709">
+            </div>
+            <div class="field-group compact">
+              <label for="video-color-range">color_range</label>
+              <input id="video-color-range" type="text" placeholder="tv">
+            </div>
+            <div class="field-group compact">
+              <label for="video-pix-fmt">pix_fmt</label>
+              <input id="video-pix-fmt" type="text" placeholder="yuv420p">
+            </div>
+          </div>
+          <div class="field-help">音声は全トラック保持が既定、音声言語は空欄なら入力元のタグを引き継ぎます。日本語のみ保持は音声タグに日本語があるトラックだけを残します。字幕は非表示・テキスト字幕変換・そのまま保持を選べます。画像字幕がある場合は MP4 では制約があります。下の JSON は自動同期されます。</div>
+        </section>
+
+        <section id="audio-settings-panel" class="preset-subpanel">
+          <div class="subpanel-heading">音声詳細設定</div>
+          <div class="settings-grid">
+            <div class="field-group compact">
+              <label for="audio-mode">音声モード</label>
+              <select id="audio-mode">
+                <option value="reencode">再エンコード</option>
+                <option value="copy">コピー</option>
+              </select>
+            </div>
+            <div class="field-group compact">
+              <label for="audio-codec">音声コーデック</label>
+              <input id="audio-codec" type="text" placeholder="libmp3lame">
+            </div>
+            <div class="field-group compact">
+              <label for="audio-bitrate-mode">bitrate mode</label>
+              <select id="audio-bitrate-mode">
+                <option value="cbr">cbr</option>
+                <option value="vbr">vbr</option>
+              </select>
+            </div>
+            <div class="field-group compact">
+              <label for="audio-bitrate">音声ビットレート</label>
+              <input id="audio-bitrate" type="text" placeholder="192k">
+            </div>
+            <div class="field-group compact">
+              <label for="audio-quality">quality</label>
+              <input id="audio-quality" type="range" min="0" max="9" step="1" value="4">
+              <div class="field-help">現在値: <span id="audio-quality-value">4</span></div>
+              <div class="field-help" id="audio-quality-help">MP3/Vorbis 系の VBR 目安です。</div>
+            </div>
+            <div class="field-group compact">
+              <label for="audio-sample-rate">音声サンプルレート</label>
+              <input id="audio-sample-rate" type="number" min="8000" step="1" placeholder="44100">
+            </div>
+            <div class="field-group compact">
+              <label for="audio-channels">チャンネル数</label>
+              <input id="audio-channels" type="number" min="1" step="1" placeholder="2">
+            </div>
+            <div class="field-group compact">
+              <label for="audio-filter">音声フィルタ</label>
+              <input id="audio-filter" type="text" placeholder="loudnorm=I=-16:TP=-1.5:LRA=11">
+            </div>
+            <div class="field-group compact">
+              <label for="audio-force-mono">モノラル化</label>
+              <label class="checkbox-inline">
+                <input id="audio-force-mono" type="checkbox">
+                有効
+              </label>
+            </div>
+            <div class="field-group compact">
+              <label for="audio-preserve-metadata">メタデータ保持</label>
+              <label class="checkbox-inline">
+                <input id="audio-preserve-metadata" type="checkbox" checked>
+                有効
+              </label>
+            </div>
+          </div>
+          <div class="field-help">音声プリセットのみ使用されます。コピー選択時は再エンコード項目を無効化します。cbr はビットレート、vbr は quality を使います。下の JSON は自動同期されます。</div>
+        </section>
+
+        <section id="image-settings-panel" class="preset-subpanel">
+          <div class="subpanel-heading">画像詳細設定</div>
+          <div class="settings-grid">
+            <div class="field-group compact">
+              <label for="image-mode">画像モード</label>
+              <select id="image-mode">
+                <option value="lossy">圧縮</option>
+                <option value="lossless">ロスレス</option>
+              </select>
+            </div>
+            <div class="field-group compact">
+              <label for="image-enhance-mode">高画質化</label>
+              <select id="image-enhance-mode">
+                <option value="off">なし</option>
+                <option value="enhance">libplacebo 高画質化</option>
+              </select>
+              <div id="image-enhance-help" class="field-help compact-help"></div>
+            </div>
+            <div class="field-group compact">
+              <label for="image-quality">quality</label>
+              <input id="image-quality" type="number" min="0" step="1" placeholder="75">
+            </div>
+            <div id="image-webp-preset-group" class="field-group compact">
+              <label for="image-webp-preset">WebP preset</label>
+              <select id="image-webp-preset">
+                <option value="default">default</option>
+                <option value="picture">picture</option>
+                <option value="photo">photo</option>
+                <option value="drawing">drawing</option>
+                <option value="icon">icon</option>
+                <option value="text">text</option>
+              </select>
+              <div id="image-webp-preset-help" class="field-help compact-help"></div>
+            </div>
+            <div id="image-jpeg-huffman-group" class="field-group compact">
+              <label for="image-jpeg-huffman">JPEG huffman</label>
+              <select id="image-jpeg-huffman">
+                <option value="default">default</option>
+                <option value="optimal">optimal</option>
+              </select>
+              <div id="image-jpeg-huffman-help" class="field-help compact-help"></div>
+            </div>
+            <div class="field-group compact">
+              <label for="image-compression-level">compression_level</label>
+              <input id="image-compression-level" type="number" min="0" max="9" step="1" placeholder="6">
+            </div>
+            <div class="field-group compact">
+              <label for="image-shader-path">shader_path</label>
+              <input id="image-shader-path" type="text" placeholder="C:\\path\\to\\shader.hook">
+              <button id="pick-shader-button" class="secondary" type="button">選択</button>
+              <button id="clear-shader-button" class="secondary" type="button">クリア</button>
+            </div>
+            <div class="field-group compact">
+              <label for="image-shader-cache">shader_cache</label>
+              <input id="image-shader-cache" type="text" placeholder="C:\\temp\\shader-cache">
+            </div>
+            <div class="field-group compact">
+              <label for="image-upscaler">upscaler</label>
+              <select id="image-upscaler">
+                <option value="spline36">spline36</option>
+                <option value="ewa_lanczos">ewa_lanczos</option>
+                <option value="bilinear">bilinear</option>
+              </select>
+            </div>
+            <div class="field-group compact">
+              <label for="image-downscaler">downscaler</label>
+              <select id="image-downscaler">
+                <option value="mitchell">mitchell</option>
+                <option value="ewa_lanczos">ewa_lanczos</option>
+                <option value="bilinear">bilinear</option>
+              </select>
+            </div>
+            <div class="field-group compact">
+              <label for="image-deband">deband</label>
+              <label class="checkbox-inline">
+                <input id="image-deband" type="checkbox" checked>
+                有効
+              </label>
+            </div>
+            <div class="field-group compact">
+              <label for="image-max-width">max_width</label>
+              <input id="image-max-width" type="number" min="1" step="1" placeholder="1280">
+            </div>
+            <div class="field-group compact">
+              <label for="image-max-height">max_height</label>
+              <input id="image-max-height" type="number" min="1" step="1" placeholder="720">
+            </div>
+            <div class="field-group compact">
+              <label for="image-preserve-metadata">メタデータ保持</label>
+              <label class="checkbox-inline">
+                <input id="image-preserve-metadata" type="checkbox" checked>
+                有効
+              </label>
+            </div>
+          </div>
+          <div class="field-help">画像プリセットのみ使用されます。ロスレスでは quality を無効化し、compression_level を使います。WebP は preset、JPEG は huffman も調整できます。高画質化を有効にすると libplacebo を通し、deband や custom shader を使えます。下の JSON は自動同期されます。</div>
+        </section>
+
+        <details class="preset-raw-details">
+          <summary>settings JSON</summary>
+          <div class="field-group">
+            <label for="preset-settings">settings JSON</label>
+            <textarea id="preset-settings" rows="5" spellcheck="false"></textarea>
+          </div>
+        </details>
+
+        <details class="preset-raw-details">
+          <summary>ffmpeg_args_template JSON</summary>
+          <div class="field-group">
+            <label for="preset-template">ffmpeg_args_template JSON</label>
+            <textarea id="preset-template" rows="5" spellcheck="false"></textarea>
+          </div>
+        </details>
+
+        <div class="button-row">
+          <button id="save-preset-button" class="primary" type="button">保存</button>
+          <button id="save-preset-default-button" class="secondary" type="button">保存して既定にする</button>
+          <button id="clear-preset-default-button" class="secondary" type="button">既定を解除</button>
+          <button id="delete-preset-button" class="secondary" type="button">削除</button>
+          <button id="restore-preset-button" class="tertiary" type="button">初期化</button>
+        </div>
+
+        <div class="field-group">
+          <label for="output-path">保存先</label>
+          <div class="input-row">
+            <input id="output-path" type="text" placeholder="temp\\out">
+            <button id="pick-output-button" class="secondary" type="button">選択</button>
+          </div>
+          <div class="field-help">保存先フォルダは存在しなければ自動作成されます。</div>
+        </div>
+
+        <div class="field-group">
+          <label>上書き設定</label>
+          <label class="checkbox-inline">
+            <input id="overwrite-existing" type="checkbox">
+            既存ファイルを上書きする
+          </label>
+          <div class="field-help">無効時は既存ファイル名を避けて末尾に連番を付けます。</div>
+        </div>
+
+        <div class="button-row">
+          <button id="open-output-button" class="secondary" type="button">保存先を開く</button>
+        </div>
+
+        <div class="button-row">
+          <button id="export-config-button" class="secondary" type="button">設定を書き出し</button>
+          <button id="import-config-button" class="secondary" type="button">設定を読み込み</button>
+          <input id="import-config-file" type="file" accept="application/json,.json" hidden>
+        </div>
+
+        <div class="button-row">
+          <button id="start-button" class="primary">開始</button>
+          <button id="stop-button" class="secondary" disabled>停止</button>
+          <button id="scan-button" class="secondary" type="button">対象一覧確認</button>
+          <button id="refresh-presets-button" class="tertiary">プリセット更新</button>
+        </div>
+      </section>
+
+      <section class="panel panel-side">
+        <h2>実行状態</h2>
+        <div class="status-card">
+          <div id="health-status">確認中...</div>
+          <div id="job-state" class="status-state">idle</div>
+        </div>
+
+        <div class="progress-wrap">
+          <div class="progress-meta">
+            <span>進捗</span>
+            <span id="progress-label">0%</span>
+          </div>
+          <div class="progress-bar">
+            <div id="progress-fill" class="progress-fill"></div>
+          </div>
+          <div class="counts">
+            <span>総数: <strong id="total-count">0</strong></span>
+            <span>完了: <strong id="completed-count">0</strong></span>
+            <span>失敗: <strong id="failed-count">0</strong></span>
+            <span>残件: <strong id="remaining-count">0</strong></span>
+          </div>
+          <div class="current-file">
+            <div class="current-label">現在処理中</div>
+            <div id="current-file">-</div>
+            <div id="current-media-info" class="current-media-info">probe info: -</div>
+          </div>
+        </div>
+      </section>
+    </section>
+
+    <section class="panel list-panel">
+      <div class="panel-heading">
+        <h2>対象一覧</h2>
+        <span id="scan-summary">未スキャン</span>
+      </div>
+      <div id="target-list" class="target-list empty">対象ファイルはまだありません。</div>
+    </section>
+
+    <section class="panel result-panel">
+      <div class="panel-heading">
+        <h2>処理結果</h2>
+        <span id="result-summary">未実行</span>
+      </div>
+      <div id="result-list" class="result-list empty">処理結果はまだありません。</div>
+    </section>
+
+    <details class="panel history-panel">
+      <summary class="panel-heading history-summary-toggle">
+        <h2>処理履歴</h2>
+        <span id="history-summary">未取得</span>
+      </summary>
+      <div class="history-panel-body">
+        <div class="history-tools">
+          <select id="history-filter" class="history-filter">
+            <option value="all">すべて</option>
+            <option value="completed">完了</option>
+            <option value="failed">失敗</option>
+            <option value="stopped">停止</option>
+          </select>
+        </div>
+        <div id="history-list" class="history-list empty">履歴はまだありません。</div>
+      </div>
+    </details>
+
+    <section class="panel log-panel">
+      <div class="panel-heading">
+        <h2>ログ</h2>
+        <span id="job-id-label">job: -</span>
+      </div>
+      <pre id="log-output" class="log-output">待機中...</pre>
+    </section>
+  </main>
+  <script src="{{ url_for('static', filename='js/api.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/ui.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
