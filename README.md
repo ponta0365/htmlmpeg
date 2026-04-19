@@ -8,6 +8,13 @@ Local FFmpeg compressor for video, audio, and image files.
 
 FFmpeg is powerful, but its command-line workflow is often too technical for everyday use. This project turns common compression tasks into a browser-based workflow with presets, local file handling, and persistent settings so the tool stays practical on Windows.
 
+## Quick Start
+
+1. Download the release EXE from GitHub.
+2. Unzip it if you want the packaged version.
+3. Run `FFMPEG.exe` on Windows.
+4. Choose a media type, select a preset, and start compression.
+
 This project provides:
 
 - a browser-based UI
