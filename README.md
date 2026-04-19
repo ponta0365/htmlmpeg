@@ -29,9 +29,21 @@ Current release branch:
 
 - `release/exe-latest`
 
-The published asset is:
+Download from:
 
-- `dist/ブラウザFFMPEG.exe`
+- https://github.com/ponta0365/htmlmpeg/releases/tag/exe-latest
+
+Published assets:
+
+- `FFMPEG.exe`
+- `FFMPEG.zip`
+
+How to use the release:
+
+1. Open the release page
+2. Download `FFMPEG.zip` if you want the packaged file, or `FFMPEG.exe` directly
+3. Extract the zip if needed
+4. Run the EXE on Windows
 
 To rebuild locally, run:
 
