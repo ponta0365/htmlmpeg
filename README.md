@@ -11,7 +11,7 @@ FFmpeg is powerful, but its command-line workflow is often too technical for eve
 ## Quick Start
 
 1. Open the GitHub release page and download an asset.
-2. Use `ブラウザFFMPEG.zip` if you want the packaged version, or `ブラウザFFMPEG.exe` directly.
+2. Use `FFMPEG.zip` if you want the packaged version, or `FFMPEG.exe` directly.
 3. Extract the zip if needed.
 4. Choose a media type, select a preset, and start compression.
 
@@ -48,13 +48,13 @@ Download from:
 
 Published assets:
 
-- `ブラウザFFMPEG.exe`
-- `ブラウザFFMPEG.zip`
+- `FFMPEG.exe`
+- `FFMPEG.zip`
 
 How to use the release:
 
 1. Open the release page
-2. Download `ブラウザFFMPEG.zip` if you want the packaged file, or `ブラウザFFMPEG.exe` directly
+2. Download `FFMPEG.zip` if you want the packaged file, or `FFMPEG.exe` directly
 3. Extract the zip if needed
 4. Run the EXE on Windows
 
