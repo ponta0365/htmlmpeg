@@ -26,7 +26,15 @@ This project provides:
 
 1. Install Python dependencies from `requirements.txt`
 2. Make sure `ffmpeg.exe` and `ffprobe.exe` are available
-3. Start the app with `start.ps1` or `python app.py`
+3. Start the app with `start.bat`, `start.ps1`, or `python app.py`
+
+If you want to force the Python app even when the packaged EXE exists, run:
+
+```powershell
+.\start.ps1 -ForcePython
+```
+
+`start.bat` is a lightweight launcher that hands off to `start.ps1` so Windows users can double-click it safely.
 
 ## Notes
 
@@ -67,8 +75,7 @@ To rebuild locally, run:
 To publish a GitHub Release with `gh`, run:
 
 ```powershell
-.\publish_release.ps1
-```
+.\publish_release.ps1`
 
 ## Acknowledgments
 
